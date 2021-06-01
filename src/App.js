@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import NavigationBar from "./components/NavigationBar";
+import Main from "./components/Main";
+import "./App.css";
+import { BrowserRouter, Route } from "react-router-dom";
+import Favourites from "./components/Favourites";
+import ThemeContext from "./contexts/theme";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import store from "./store";
 
-function App() {
+export default function App() {
+  const [theme, setTheme] = useState("light");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Provider store={store}>
+        <ThemeContext.Provider value={[theme, setTheme]}>
+          <NavigationBar />
+          <div className={`${theme}-theme`}>
+            <Route exact path="/" component={Main} />
+            <Route exact path="/favourites" component={Favourites} />
+          </div>
+        </ThemeContext.Provider>
+      </Provider>
+    </BrowserRouter>
   );
 }
-
-export default App;
